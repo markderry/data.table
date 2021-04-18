@@ -80,6 +80,7 @@
        "datatable.print.colnames"="'auto'",    # for print.data.table
        "datatable.print.keys"="FALSE",         # for print.data.table
        "datatable.print.trunc.cols"="FALSE",   # for print.data.table
+       "datatable.print.collabels"="FALSE",    # for print.data.table
        "datatable.allow.cartesian"="FALSE",    # datatable.<argument name>
        "datatable.dfdispatchwarn"="TRUE",                   # not a function argument
        "datatable.warnredundantby"="TRUE",                  # not a function argument

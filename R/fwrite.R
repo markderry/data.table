@@ -94,12 +94,15 @@ fwrite = function(x, file="", append=FALSE, quote="auto",
       source = sprintf('R[v%s.%s]::data.table[v%s]::fwrite',
                        R.version$major, R.version$minor, format(tryCatch(utils::packageVersion('data.table'), error=function(e) 'DEV'))),
       creation_time_utc = format(Sys.time(), tz='UTC'),
-      schema = list(
-        fields = lapply(
-          seq_along(x),
-          function(i) list(name=schema_vec$name[i], type=schema_vec$type[i])
-        )
-      ),
+      
+      
+        schema = list(
+          fields = lapply(
+            seq_along(x),
+            if(is.null(attr(x, "labels"))) function(i) list(name = schema_vec$name[i], type = schema_vec$type[i]) else
+              function(i) list(name = schema_vec$name[i], type = schema_vec$type[i], label = attr(x, "label")[i])
+          )
+        ),
       header=col.names, sep=sep, sep2=sep2, eol=eol, na.strings=na,
       dec=dec, qmethod=qmethod, logical01=logical01
     )

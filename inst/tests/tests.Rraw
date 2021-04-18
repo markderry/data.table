@@ -16772,5 +16772,22 @@ rm(s1, s2, class2132)
 
 
 ########################
-#  Add new tests here  #
+
+# column label tests, #623
+DT = data.table(
+    ID = c("b","b","b","a","a","c"),
+    a = 1:6,
+    b = 7:12,
+    c = 13:18
+)
+collabels <- c("ID Column", "Col A", "Col B", "Col C")
+test(2133.1, x = all(attr(DT, "labels")==collabels), y = FALSE)
+setlabels(DT, collabels = collabels)
+test(2133.2, x = all(attr(DT, "labels")==collabels), y = TRUE)
+
+printout <- capture.output(print(DT, col.labels = TRUE))
+test(2133, printout[2]=="   ID Column Col A Col B Col C")
+
+
+
 ########################

@@ -7,6 +7,7 @@ print.data.table = function(x, topn=getOption("datatable.print.topn"),
                col.names=getOption("datatable.print.colnames"),
                print.keys=getOption("datatable.print.keys"),
                trunc.cols=getOption("datatable.print.trunc.cols"),
+               col.labels=getOption("datatable.print.collabels"),
                quote=FALSE,
                timezone=FALSE, ...) {
   # topn  - print the top topn and bottom topn rows with '---' inbetween (5)
@@ -89,6 +90,10 @@ print.data.table = function(x, topn=getOption("datatable.print.topn"),
     toprint = rbind(abbs, toprint)
     rownames(toprint)[1L] = ""
   }
+  if (isTRUE(col.labels)){
+    toprint = rbind(collabels, toprint)
+    rownames(toprint)[1L] = ""
+  } 
   if (isFALSE(class) || (isTRUE(class) && col.names == "none")) abbs = ""
   if (quote) colnames(toprint) <- paste0('"', old <- colnames(toprint), '"')
   if (isTRUE(trunc.cols)) {

@@ -213,6 +213,7 @@ yaml=FALSE, autostart=NA, tmpdir=tempdir())
       setkeyv(synonms, 'syn')
       new_types = synonms[list(new_types)]$r_type
       new_names = sapply(yaml_header$schema$fields[!null_idx], `[[`, 'name')
+      new_labels = sapply(yaml_header$schema$fields[!null_idx], `[[`, 'label')
 
       if ('col.names' %chin% call_args) message("User-supplied column names in 'col.names' will override those found in YAML metadata.")
       # resolve any conflicts with colClasses, if supplied;
@@ -308,7 +309,7 @@ yaml=FALSE, autostart=NA, tmpdir=tempdir())
     set(ans, j = j, value = new_v)  # aside: new_v == v if the coercion was aborted
   }
   setattr(ans, "colClassesAs", NULL)
-
+  if (!is.null(new_labels)) setattr(ans, "labels", new_labels)
   if (stringsAsFactors) {
     if (is.double(stringsAsFactors)) { #2025
       should_be_factor = function(v) is.character(v) && uniqueN(v) < nr * stringsAsFactors
@@ -331,6 +332,7 @@ yaml=FALSE, autostart=NA, tmpdir=tempdir())
     setkeyv(ans, key)
   }
   if (yaml) setattr(ans, 'yaml_metadata', yaml_header)
+  
   if (!is.null(index) && data.table) {
     if (!all(sapply(index, is.character)))
       stop("index argument of data.table() must be a character vector naming columns (NB: col.names are applied before this)")
